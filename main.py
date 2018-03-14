@@ -81,12 +81,14 @@ while 1:
     reload(config)
     
     print('ITERATION NUMBER ' + str(iteration))
+    lg.logger_main.info('ITERATION NUMBER: %d', iteration)
     
     lg.logger_main.info('BEST PLAYER VERSION: %d', best_player_version)
     print('BEST PLAYER VERSION ' + str(best_player_version))
 
     ######## SELF PLAY ########
     print('SELF PLAYING ' + str(config.EPISODES) + ' EPISODES...')
+    lg.logger_main.info('SELF PLAYING: %d', config.EPISODES)
     _, memory, _, _ = playMatches(best_player, best_player, config.EPISODES, lg.logger_main, turns_until_tau0 = config.TURNS_UNTIL_TAU0, memory = memory)
     print('\n')
     
@@ -96,6 +98,7 @@ while 1:
 
         ######## RETRAINING ########
         print('RETRAINING...')
+        lg.logger_main.info('RETRAINING...')
         current_player.replay(memory.ltmemory)
         print('')
 
@@ -125,6 +128,7 @@ while 1:
             
         ######## TOURNAMENT ########
         print('TOURNAMENT...')
+        lg.logger_main.info('TOURNAMENT...')
         scores, _, points, sp_scores = playMatches(best_player, current_player, config.EVAL_EPISODES, lg.logger_tourney, turns_until_tau0 = 0, memory = None)
         print('\nSCORES')
         print(scores)
@@ -141,3 +145,4 @@ while 1:
 
     else:
         print('MEMORY SIZE: ' + str(len(memory.ltmemory)))
+        lg.logger_main.info('MEMORY SIZE: %d', len(memory.ltmemory))
